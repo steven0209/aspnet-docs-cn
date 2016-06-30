@@ -6,6 +6,6 @@ Caching
   
   memory
   distributed
-  response
+  response-caching
   output
 
