@@ -1,0 +1,32 @@
+﻿@{
+    Layout = null;
+}
+<!-- Single statement blocks  -->
+@{ var total = 7; }
+@{ var myMessage = "Hello World"; }
+
+<!-- Inline expressions -->
+<p>The value of your account is: @total </p>
+<p>The value of myMessage is: @myMessage</p>
+
+<!-- Multi-statement block -->
+@* Razor comment.  *@
+@{
+    var greeting = "Welcome!";
+    var weekDay = DateTime.Now.DayOfWeek;
+    var leapYear = DateTime.IsLeapYear(DateTime.Now.Year);
+    var greetingMessage = greeting + " Today is: " + weekDay
+        + " -Leap year: " + leapYear;
+}
+<p>The greeting is :<br /> @greetingMessage</p>
+@* End of greeting *@
+
+<p>
+    Last week: @DateTime.Now - TimeSpan.FromDays(7)
+</p>
+
+@*Add () to get correct time.*@
+<p>
+    Last week: @(DateTime.Now - TimeSpan.FromDays(7))
+</p>
+@*End of correct time*@
