@@ -204,12 +204,58 @@ And is rendered in a browser as:
 
   /* This is not C#, it's HTML */ 
 
+Control Structures
+------------------
 
+Control structures are an extension of code blocks. All aspects of code blocks (transitioning to markup, inline C#) also apply to the following structures.
 
+Conditionals ``@if``, ``else if``, ``else`` and ``@switch``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+The ``@if`` family controls when code runs:
 
+.. code-block:: html
 
+  @if (value % 2 == 0)
+  {
+      <p>The value was even</p>
+  }
 
+``else`` and ``else if`` don't require the ``@`` symbol:
+
+.. code-block:: html
+
+ @if (value % 2 == 0)
+ {
+     <p>The value was even</p>
+ }
+ else if (value >= 1337)
+ {
+     <p>The value is large.</p>
+ }
+ else
+ {
+     <p>The value was not large and is odd.</p>
+ }
+ 
+``@switch ``
+^^^^^^^^^^^^^
+
+.. code-block:: html
+
+ @switch (value)
+ {
+     case 1:
+         <p>The value is 1!</p>
+         break;
+     case 1337:
+         <p>Your number is 1337!</p>
+         break;
+     default:
+         <p>Your number was not 1 or 1337.</p>
+         break;
+ }
+ 
 
 
 Working with ``\`` and ``"``
