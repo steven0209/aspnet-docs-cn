@@ -1,15 +1,15 @@
 ﻿@{
     Layout = null;
 }
-<!-- Single statement blocks  -->
+<!-- Single statement blocks, explicit.  -->
 @{ var total = 7; }
 @{ var myMessage = "Hello World"; }
 
-<!-- Inline expressions -->
+<!-- Inline expressions, implicit. -->
 <p>The value of your account is: @total </p>
 <p>The value of myMessage is: @myMessage</p>
 
-<!-- Multi-statement block -->
+<!-- Multi-statement block, explicit.  -->
 @* Razor comment.  *@
 @{
     var greeting = "Welcome!";
@@ -30,3 +30,44 @@
     Last week: @(DateTime.Now - TimeSpan.FromDays(7))
 </p>
 @*End of correct time*@
+
+<a href="mailto:Support@contoso.com">Support@contoso.com</a>
+
+<br /><br />
+
+@("<div>Hello World</div>") 
+
+<br /><br />
+
+@Html.Raw("<div>Hello World</div>") 
+
+<br /><br />
+
+ <!-- Embedding a backslash in a string -->
+@{ var myFilePath = @"C:\MyFolder\"; }
+<p>The path is: @myFilePath</p>
+
+
+<br /><br />
+
+<!-- Embedding double quotation marks in a string -->
+@{ var myQuote = @"The person said: ""Hello, today is Monday."""; }
+<p>@myQuote</p>
+
+  @{
+      var inCSharp = true;
+      <p>Now in HTML, was in C# @inCSharp</p>
+  }
+
+  @{
+  /* C# */<text>I'm HTML</text>/* C# */
+  }
+
+<br /><br />
+
+@{
+/* Still C# */@: <p>Hello World</p> /* This is not C#, it's HTML */
+}
+
+
+<br /><br />
