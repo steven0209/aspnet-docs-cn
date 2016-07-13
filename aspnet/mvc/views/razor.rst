@@ -1,7 +1,11 @@
 Razor Syntax Reference    
 ===========================
-`Taylor Mullen`_, and `Rick Anderson`_
+`Taylor Mullen <https://twitter.com/ntaylormullen>`__, and `Rick Anderson`_
 
+.. contents:: Sections
+  :local:
+  :depth: 1
+  
 What is Razor?
 --------------
 Razor is a markup syntax for embedding server based code into web pages. The Razor syntax consists of Razor markup, C# and HTML. Files containing Razor generally have a *.cshtml* file extension.
@@ -103,10 +107,55 @@ would render the following HTML:
  
  <p>@Username</p> 
 
+.. review: Doesn't Razor treat anything that looks like an email alias as email? Not just in HTML attributes?
+
+.. _razor-email-ref:
+
+``@`` used in an email alias
+-----------------------------
+
 HTML attributes containing email addresses don’t treat the ``@`` symbol as a transition character.
 
  ``<a href="mailto:Support@contoso.com">Support@contoso.com</a>``
 
+Consider the following Razor markup:
+
+.. code-block:: html
+
+  @{
+      var joe = new Person("Joe", 33);
+   }
+  
+  <p>Age @joe.Age</p>
+
+Predictibly, the server renders ``<p>Age 33</p>``. But suppose you needed to concatinate the output to get ``Age33`` with no space between "Age" and "33". The following markup:
+
+.. code-block:: html
+
+  @{
+      var joe = new Person("Joe", 33);
+   }
+  
+  <p>Age@joe.Age</p>
+
+generates:
+
+.. code-block:: html
+
+  <p>Age@joe.Age</p>
+
+Razor is treating ``Age@joe.Age`` as an email alias. In case like this, create an explicit expression with ``()``:
+
+.. code-block:: html
+
+ <p>Age@(joe.Age)</p>
+ 
+Which renders
+
+.. code-block:: html
+
+  <p>Age33</p>
+  
 Explict Razor statement blocks surrounded by ``{}`` contain normal C# and therefore each C# statement must be terminated with the ``;`` character. Implict statements don't use ``;`` termination:
 
 .. literalinclude:: razor/sample/Views/Home/Contact.cshtml
@@ -154,7 +203,7 @@ Which the browser renders as:
 
 
 Rendering markup in code blocks and implicit transition
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+-------------------------------------------------------
 
 The default languge in a code block is c#, but you can transition back to HTML. HTML within a code block will transition back into rendering HTML:
 
@@ -179,10 +228,12 @@ To define a sub-section of a code block that should render HTML, surround the ch
 
 Which renders ``I'm HTML``. You generally use this approach when you want to render HTML that is not surrounded by an HTML tag.
 
-Explicit Line Transition
-^^^^^^^^^^^^^^^^^^^^^^^^
+.. _Explicit-Line-Transition-label:
 
-To render an entire line inside of a code block, utilize the @: characters:
+Explicit Line Transition with ``@:``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To render an entire line inside of a code block, utilize the ``@:`` characters:
 
 .. code-block:: html
 
@@ -203,7 +254,38 @@ And is rendered in a browser as:
   Hello World
 
   /* This is not C#, it's HTML */ 
+  
+Consider the following Razor markup which renders a list of names:
 
+.. code-block:: html
+
+  @for (var i = 0; i < people.Length; i++)
+  {
+      var person = people[i];
+      <p>Name: @person.Name</p>
+  }
+
+The HTML tag ``<p> </p>`` provides a boundry for Razor to transistion into C#. But suppose you wanted to render the names **without** HTML tags? The following code generates a Razor compilation error:
+
+.. code-block:: html
+
+  @for (var i = 0; i < people.Length; i++)
+  {
+      var person = people[i];
+      Name: @person.Name
+  }
+
+Use the ``@:`` characters to specify that Razor should transition from C# to text:
+
+.. code-block:: html
+
+  @for (var i = 0; i < people.Length; i++)
+  {
+      var person = people[i];
+      Name: @person.Name
+  }
+
+  
 Control Structures
 ------------------
 
@@ -238,7 +320,7 @@ The ``@if`` family controls when code runs:
      <p>The value was not large and is odd.</p>
  }
  
-``@switch ``
+``@switch``
 ^^^^^^^^^^^^^
 
 .. code-block:: html
@@ -256,8 +338,177 @@ The ``@if`` family controls when code runs:
          break;
  }
  
+Looping ``@for``, ``@foreach``, ``@while``, and ``@do while``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+You can render templated HTML with looping control statements. For example, to render a list of people:
+
+.. code-block:: html
+
+  @{
+      var people = new Person[]
+      {
+            new Person("John", 33),
+            new Person("Doe", 41),
+      };
+  }
+  
+``@for``
+^^^^^^^^^
+
+.. code-block:: html
+
+  @for (var i = 0; i < people.Length; i++)
+  {
+      var person = people[i];
+      <p>Name: @person.Name</p>
+      <p>Age: @person.Age</p>
+  }
+
+``@foreach``
+^^^^^^^^^^^^
+
+.. code-block:: html
+
+  @foreach (var person in people)
+  {
+      <p>Name: @person.Name</p>
+      <p>Age: @person.Age</p>
+  }
+
+``@while``
+^^^^^^^^^^^^
+
+.. code-block:: html
+
+  @{ var i = 0; }
+  @while (i < people.Length)
+  {
+      var person = people[i];
+      <p>Name: @person.Name</p>
+      <p>Age: @person.Age</p>
+  
+      i++;
+  }
+
+``@do while``
+^^^^^^^^^^^^^^^^
+
+.. code-block:: html
+
+  @{ var i = 0; }
+  @do
+  {
+      var person = people[i];
+      <p>Name: @person.Name</p>
+      <p>Age: @person.Age</p>
+  
+      i++;
+  } while (i < people.Length);
+
+Compound ``@using``
+^^^^^^^^^^^^^^^^^^^^
+
+Compound using statements can be used to represent scoping. For instance, we can utilize :doc:`/mvc/views/html-helpers` to render a form tag with the ``@using`` statement:
+
+.. code-block:: html
+
+  @using (Html.BeginForm())
+  {
+      // Form content.
+  }
+
+You can also perform scope level actions like the above with :doc:`/mvc/views/tag-helpers/index`
 
 
+``@try``, ``catch``, ``finally`` 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Exception handling is similar to  C#:
+
+.. code-block:: html
+  
+  @try
+  {
+      throw new InvalidOperationException("You did something invalid.");
+  }
+  catch (Exception ex)
+  {
+      <p>The exception message: @ex.Message</p>
+  }
+  finally
+  {
+      // Do something
+  }
+
+``@lock``
+^^^^^^^^^
+
+Razor has the capability to protect critical sections with lock statements:
+
+.. code-block:: html
+
+  @lock (SomeLock)
+  {
+      // Do critical section work
+  }
+
+Comments
+^^^^^^^^^^
+
+Razor supports C# and HTML comments. The following markup:
+
+.. code-block:: html
+
+  @{
+      /* C# comment. */
+      // Another C# comment.
+  }
+  <!-- HTML comment -->
+
+Is rendered by the server as:
+
+.. code-block:: html
+
+  <!-- HTML comment -->
+
+Razor comments are removed by the server before the page is rendered. Razor uses ``@*  *@`` for comments. The following code is commented out, so the server will not render any markup:
+
+.. code-block:: html
+
+    @*
+    @{
+        /* C# comment. */
+        // Another C# comment.
+    }
+    <!-- HTML comment -->
+   *@
+
+Directives
+-----------
+Razor directives are represented by implicit expressions with reserved keywords following the ``@`` symbol. A directive will typically change the way a page is parsed or enable different functionality within your Razor page. At its core, a Razor page is just a generated C# file. A simple example of what a Razor page generates behind the scenes:
+
+.. code-block:: html
+
+  @{
+      Layout = null;
+  }
+  
+  @{
+      var output = "Hello World";
+  }
+  
+  <div>Output: @output</div>
+ 
+
+   
+   
+   
+   
+   
+   
+   
+   
 Working with ``\`` and ``"``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 

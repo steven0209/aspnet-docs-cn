@@ -35,15 +35,15 @@
 
 <br /><br />
 
-@("<div>Hello World</div>") 
+@("<div>Hello World</div>")
 
 <br /><br />
 
-@Html.Raw("<div>Hello World</div>") 
+@Html.Raw("<div>Hello World</div>")
 
 <br /><br />
 
- <!-- Embedding a backslash in a string -->
+<!-- Embedding a backslash in a string -->
 @{ var myFilePath = @"C:\MyFolder\"; }
 <p>The path is: @myFilePath</p>
 
@@ -54,50 +54,81 @@
 @{ var myQuote = @"The person said: ""Hello, today is Monday."""; }
 <p>@myQuote</p>
 
-  @{
-      var inCSharp = true;
-      <p>Now in HTML, was in C# @inCSharp</p>
-  }
+@{
+    var inCSharp = true;
+    <p>Now in HTML, was in C# @inCSharp</p>
+}
 
-  @{
-/* C# */<text>I'm HTML</text>/* C# */
-  }
+@{
+/* C# */<text>I'm HTML</text>            /* C# */
+}
 
 <br /><br />
 
-  @{
+@{
 /* Still C# */@: <p>Hello World</p> /* This is not C#, it's HTML */
-  }
+}
 
 
 <br /><br />
 
 @{ var @value = 77; }
 
- @if (value % 2 == 0)
- {
-     <p>The value was even</p>
- }
- else if (value >= 1337)
- {
-     <p>The value is large.</p>
- }
- else
- {
-     <p>The value was not large and is odd.</p>
- }
+@if (value % 2 == 0)
+{
+    <p>The value was even</p>
+}
+else if (value >= 1337)
+{
+    <p>The value is large.</p>
+}
+else
+{
+    <p>The value was not large and is odd.</p>
+}
 
 <br /><br />
 
- @switch (value)
- {
-     case 1:
-         <p>The value is 1!</p>
-         break;
-     case 1337:
-         <p>Your number is 1337!</p>
-         break;
-     default:
-         <p>Your number was not 1 or 1337.</p>
-         break;
- }
+@switch (value)
+{
+    case 1:
+        <p>The value is 1!</p>
+        break;
+    case 1337:
+        <p>Your number is 1337!</p>
+        break;
+    default:
+        <p>Your number was not 1 or 1337.</p>
+        break;
+}
+@*  *@
+  @try
+  {
+      throw new InvalidOperationException("You did something invalid.");
+  }
+  catch (Exception ex)
+  {
+      <p>The exception message: @ex.Message</p>
+  }
+  finally
+  {
+      // Do something
+  }
+
+<br /><br />
+
+  @{
+      /* C# comment. */
+      // Another C# comment.
+  }
+  <!-- HTML comment -->
+
+    @*
+    @{
+        /* C# comment. */
+        // Another C# comment.
+    }
+    <!-- HTML comment -->
+   *@
+
+  <!-- HTML comment 2 -->
