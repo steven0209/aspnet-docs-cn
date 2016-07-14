@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Mvc.Razor.Compilation;
 
 namespace RazorSample
 {
@@ -27,8 +28,8 @@ namespace RazorSample
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add framework services.
             services.AddMvc();
+            services.AddSingleton<ICompilationService, CustomCompilationService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

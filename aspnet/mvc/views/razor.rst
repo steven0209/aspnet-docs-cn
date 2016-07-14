@@ -57,7 +57,7 @@ Renders this HTML markup:
 Which is rendered by a browser as:
 
 .. image:: razor/_static/r1.png
-  :width: 400px
+  :scale: 100
 
 Explict expressesion generally cannot contain spaces. For example:
 
@@ -504,23 +504,23 @@ Razor directives are represented by implicit expressions with reserved keywords 
  
 The Razor markup above will generate a class similar to the following:
 
+.. review: I copy/pasted from what was generated so my call differs from your version.
+
 .. code-block:: c#
 
-  public class MyRazorPage : RazorPage<dynamic>
+  public class _Views_Something_cshtml : RazorPage<dynamic>
   {
-      public override Task ExecuteAsync()
+      public override async Task ExecuteAsync()
       {
           var output = "Hello World";
   
-          WriteLiteral("<div>Output: ");
+          WriteLiteral("\r\n<div>Output: ");
           Write(output);
           WriteLiteral("</div>");
-  
-          return Task.CompletedTask;
       }
   }
    
-Understanding how Razor generates code for a view will make it easier to follow how directives work.
+:ref:`Razor-CustomCompilationService-label` explains how to view this class. Understanding how Razor generates code for a view will make it easier to follow how directives work.
    
 ``@using``
 The ``@using`` directive will add the c# ``using`` directive to the generated razor page:
@@ -535,7 +535,56 @@ The ``@using`` directive will add the c# ``using`` directive to the generated ra
   }
   <p>@dir</p>
    
-- :ref:`Directives <Razor-Directives-label>`
+
+``@model``
+^^^^^^^^^^^^^
+
+The ``@model`` directive allows you to specify the type of the model past to your Razor page. It uses the following syntax:
+
+``@model TypeNameOfModel``
+
+For example, if you create a new ASP.NET Core MVC app with individual user accounts, the *Views\Account\Login.cshtml* Razor view file contains the follow model declaration:
+
+.. code-block:: c#
+
+  @model LoginViewModel
+
+In the class example in :ref:`Razor-Directives-label`, the class generated inherits from ``RazorPage<dynamic>``. By adding an ``@model`` you control what’s inherited. For example
+
+.. code-block:: c#
+
+  @model LoginViewModel
+  
+Generates the following class
+
+.. code-block:: c#
+
+ public class _Views_Account_Login_cshtml : RazorPage<LoginViewModel>
+ 
+ 
+This allows you to access the strongly typed model in your Razor page through the ``Model`` property:
+
+.. code-block:: html
+
+  <div>The Login Email: @Model.Email</div>
+  
+Obviously you must pass the model from your controller to the view. See :ref:`Strongly-typed-models-keyword-label` for more information.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
    
 Working with ``\`` and ``"``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -559,4 +608,32 @@ To embed double quotation marks, use a verbatim string literal and repeat the qu
 The browser rendering of the above Razor markup:
 
 .. image:: razor/_static/r2.png
-  :width: 350px
+  :scale: 100
+  
+  
+  
+  
+  
+  
+.. _Razor-CustomCompilationService-label:
+
+Viewing the Razor C# class generated for a view
+------------------------------------------------
+
+Add the following class to your ASP.NET Core MVC project:
+
+.. literalinclude:: razor\sample\Services\CustomCompilationService.cs
+
+Override the :dn:iface:`~Microsoft.AspNetCore.Mvc.Razor.Compilation.ICompilationService` added by MVC with the above class;
+
+.. literalinclude:: razor\sample\Startup.cs
+  :start-after:  Use this method to add services to the container.
+  :end-before:  // This method gets called by the runtime.
+  :dedent: 8
+  :emphasize-lines: 4
+
+Set a break point on the ``Compile`` method of ``CustomCompilationService`` and view ``compilationContent``. 
+
+.. image:: razor/_static/tvr.png
+  :scale: 100
+  :alt: Text Visualizer view of compilationContent

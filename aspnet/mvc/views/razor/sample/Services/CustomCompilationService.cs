@@ -7,15 +7,17 @@ using Microsoft.Extensions.Options;
 
 public class CustomCompilationService : DefaultRoslynCompilationService, ICompilationService
 {
-    public CustomCompilationService(ApplicationPartManager partManager, IOptions<RazorViewEngineOptions> optionsAccessor, 
-        IRazorViewEngineFileProviderAccessor fileProviderAccessor, ILoggerFactory loggerFactory) 
+    public CustomCompilationService(ApplicationPartManager partManager, 
+        IOptions<RazorViewEngineOptions> optionsAccessor, 
+        IRazorViewEngineFileProviderAccessor fileProviderAccessor, 
+        ILoggerFactory loggerFactory) 
         : base(partManager, optionsAccessor, fileProviderAccessor, loggerFactory)
     {
     }
 
-    CompilationResult ICompilationService.Compile(RelativeFileInfo fileInfo, string compilationContent)
+    CompilationResult ICompilationService.Compile(RelativeFileInfo fileInfo, 
+        string compilationContent)
     {
-        // Put break point here and inspect compilationContent
         return base.Compile(fileInfo, compilationContent);
     }
 }
