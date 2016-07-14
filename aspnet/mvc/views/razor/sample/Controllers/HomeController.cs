@@ -29,6 +29,7 @@ namespace RazorSample.Controllers
 
         public IActionResult Error()
         {
+       //     Microsoft.AspNetCore.Mvc.Razor.Compilation
             return View();
         }
     }

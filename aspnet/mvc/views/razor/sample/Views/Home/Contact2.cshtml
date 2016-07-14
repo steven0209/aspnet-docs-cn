@@ -1,4 +1,6 @@
-﻿  @{
+﻿@using  System.IO
+@using RazorSample.Models
+@{
       Layout = null;
   }
   
@@ -19,6 +21,7 @@
 }
 
 @{
+
     var people = new Person[]
     {
             new Person("John", 33),
@@ -33,3 +36,8 @@
       var person = people[i];
       @:Name: @person.Name
   }
+
+  @{ 
+      var dir = Directory.GetCurrentDirectory();
+  }
+  <p>@dir</p>

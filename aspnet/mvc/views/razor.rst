@@ -472,7 +472,7 @@ Is rendered by the server as:
 
   <!-- HTML comment -->
 
-Razor comments are removed by the server before the page is rendered. Razor uses ``@*  *@`` for comments. The following code is commented out, so the server will not render any markup:
+Razor comments are removed by the server before the page is rendered. Razor uses ``@*  *@`` to delimit comments. The following code is commented out, so the server will not render any markup:
 
 .. code-block:: html
 
@@ -484,9 +484,11 @@ Razor comments are removed by the server before the page is rendered. Razor uses
     <!-- HTML comment -->
    *@
 
+.. _Razor-Directives-label:
+
 Directives
 -----------
-Razor directives are represented by implicit expressions with reserved keywords following the ``@`` symbol. A directive will typically change the way a page is parsed or enable different functionality within your Razor page. At its core, a Razor page is just a generated C# file. A simple example of what a Razor page generates behind the scenes:
+Razor directives are represented by implicit expressions with reserved keywords following the ``@`` symbol. A directive will typically change the way a page is parsed or enable different functionality within your Razor page. A Razor page is just a generated C# file. A simple example of what a Razor page generates:
 
 .. code-block:: html
 
@@ -500,14 +502,40 @@ Razor directives are represented by implicit expressions with reserved keywords 
   
   <div>Output: @output</div>
  
+The Razor markup above will generate a class similar to the following:
 
+.. code-block:: c#
+
+  public class MyRazorPage : RazorPage<dynamic>
+  {
+      public override Task ExecuteAsync()
+      {
+          var output = "Hello World";
+  
+          WriteLiteral("<div>Output: ");
+          Write(output);
+          WriteLiteral("</div>");
+  
+          return Task.CompletedTask;
+      }
+  }
    
+Understanding how Razor generates code for a view will make it easier to follow how directives work.
    
+``@using``
+The ``@using`` directive will add the c# ``using`` directive to the generated razor page:
+
+.. review: You had @using System.Collections.Generic - but that's included in the Razor page.
+
+.. code-block:: html
+
+  @using  System.IO
+  @{ 
+      var dir = Directory.GetCurrentDirectory();
+  }
+  <p>@dir</p>
    
-   
-   
-   
-   
+- :ref:`Directives <Razor-Directives-label>`
    
 Working with ``\`` and ``"``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

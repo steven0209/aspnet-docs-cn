@@ -1,4 +1,4 @@
-﻿namespace RazorSample
+﻿namespace RazorSample.Models
 {
     public class Person
     {
@@ -7,7 +7,7 @@
             Name = name;
             Age = age;
         }
-            public string Name;
-            public int Age;
-        }
+        public string Name;
+        public int Age;
+    }
 }
