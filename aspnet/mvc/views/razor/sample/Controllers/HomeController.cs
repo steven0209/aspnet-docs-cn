@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using RazorSample.Models;
 
 namespace RazorSample.Controllers
 {
@@ -27,9 +24,14 @@ namespace RazorSample.Controllers
             return View(viewName);
         }
 
+        public IActionResult Login(int? id)
+        {
+            var viewName = id == null ? "Login" : "Login" + id.ToString();
+            return View(viewName, new LoginViewModel { Email = "Rick@Example.com" });
+        }
+
         public IActionResult Error()
         {
-       //     Microsoft.AspNetCore.Mvc.Razor.Compilation
             return View();
         }
     }
