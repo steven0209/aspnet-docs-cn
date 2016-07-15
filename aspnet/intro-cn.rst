@@ -14,26 +14,26 @@ ASP.NET Core是ASP.NET具有意义的重新设计. 此系列文章介绍了ASP.N
 
 ASP.NET Core是崭新的开源和跨平台的框架，用来创建现代基于云的因特网互联应用程序，如Web应用、IoT应用和移动后端. ASP.NET Core应用可以运行在`.NET Core <https://www.microsoft.com/net/core/platform>`__ 或者在完整的.NET Framework上.它的架构被设计为提供一个优化的应用开发框架，让应用可以基于云或本地部署运行. 它包括最小功能单位的模块化组件,所以你可以在构建你的解决方案时保持灵活.你可以跨平台开发并运行你的ASP.NET Core apps于Windows, Mac 和 Linux. ASP.NET Core 在 `GitHub <https://github.com/aspnet/home>`_网站上开源.
 
-Why build ASP.NET Core?
+为什么构建ASP.NET Core?
 -----------------------
 
-The first preview release of ASP.NET came out almost 15 years ago as part of the .NET Framework.  Since then millions of developers have used it to build and run great web apps, and over the years we have added and evolved many capabilities to it.
+作为.NET Framework的一部分,ASP.NET第一个预览版发布距今已经15年.  然后无数的开发者开始使用它创建和运行高品质的Web应用, 在此过程中我们也在不断添加和包含更多的功能到其中.
 
-ASP.NET Core has a number of architectural changes that result in a much leaner and modular framework.  ASP.NET Core is no longer based on *System.Web.dll*. It is based on a set of granular and well factored `NuGet <http://www.nuget.org/>`__ packages. This allows you to optimize your app to include just the NuGet packages you need. The benefits of a smaller app surface area include tighter security, reduced servicing, improved performance, and decreased costs in a pay-for-what-you-use model.
+ASP.NET Core拥有一系列的架构变化使其成为更领先和模块化的框架.  ASP.NET Core不再基于*System.Web.dll*. 它基于一系列粒度良好`NuGet <http://www.nuget.org/>`__ 程序包. 这就允许你只包含你需要的程序包来优化你的应用. 更小的应用表面区域的好处就是严密的安全性、减少维护、提高性能、和降低成本，采用"支付你所用"模式.
 
-With ASP.NET Core you gain the following foundational improvements:
+通过ASP.NET Core你尅获得如下基础性的提高:
 
-- A unified story for building web UI and web APIs
-- Integration of :doc:`modern client-side frameworks </client-side/index>` and development workflows
-- A cloud-ready environment-based :doc:`configuration system </fundamentals/configuration>`
-- Built-in :doc:`dependency injection </fundamentals/dependency-injection>`
-- New light-weight and modular HTTP request pipeline
-- Ability to host on IIS or self-host in your own process
-- Built on `.NET Core`_, which supports true side-by-side app versioning
-- Ships entirely as `NuGet`_  packages
-- New tooling that simplifies modern web development
-- Build and run cross-platform ASP.NET apps on Windows, Mac and Linux
-- Open source and community focused
+- 一致的web UI和web API构建感受
+- 集成的 :doc:`modern client-side frameworks </client-side/index>` 和开发工作流
+- 基于为云准备的环境 :doc:`configuration system </fundamentals/configuration>`
+- 内建 :doc:`dependency injection </fundamentals/dependency-injection>`
+- 新的轻量和模块化HTTP请求管道
+- IIS宿主或在你自己的集成中自宿主的能力
+- 构建在 `.NET Core`_上, 其支持真正的端对端(side-by-side)应用版本控制
+- 整个应用都通过 `NuGet`_  程序包传递
+- 新的工具简化了现代web开发
+- 构建并运行跨平台ASP.NET应用于Windows, Mac和Linux
+- 开源并面向社区
 
 Application anatomy
 -------------------

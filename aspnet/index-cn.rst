@@ -8,7 +8,7 @@
 ASP.NET Core 说明文档
 ==========================
 
-.. 注意:: ASP.NET 5已更名为ASP.NET Core 1.0. 阅读 `更多 <https://blogs.msdn.microsoft.com/webdev/2016/02/01/an-update-on-asp-net-core-and-net-core/>`_.
+.. attention:: ASP.NET 5已更名为ASP.NET Core 1.0. 阅读 `更多 <https://blogs.msdn.microsoft.com/webdev/2016/02/01/an-update-on-asp-net-core-and-net-core/>`_.
 
 .. include:: ../common/stub-overview.txt
 
