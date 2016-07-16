@@ -35,22 +35,22 @@ ASP.NET Core拥有一系列的架构变化使其成为更领先和模块化的�
 - 构建并运行跨平台ASP.NET应用于Windows, Mac和Linux
 - 开源并面向社区
 
-Application anatomy
+应用分解(anatomy)
 -------------------
 
 .. comment In RC1, The work of the WebHostBuilder was hidden in dnx.exe
 
-An ASP.NET Core app is simply a console app that creates a web server in its ``Main`` method:
+ASP.NET Core应用被简化为在它的``Main``方法中创建web服务器的控制台应用:
 
 .. literalinclude:: /getting-started/sample/aspnetcoreapp/Program.cs
     :language: c#
 
-``Main`` uses :dn:cls:`~Microsoft.AspNetCore.Hosting.WebHostBuilder`, which follows the builder pattern, to create a web application host. The builder has methods that define the web server (for example ``UseKestrel``) and the startup class (``UseStartup``). In the example above, the Kestrel web server is used, but other web servers can be specified. We'll show more about ``UseStartup`` in the next section. ``WebHostBuilder`` provides many optional methods including ``UseIISIntegration`` for hosting in IIS and IIS Express and ``UseContentRoot`` for specifying the root content directory. The ``Build`` and ``Run`` methods build the ``IWebHost`` that will host the app and start it listening for incoming HTTP requests.
+``Main`` 使用 :dn:cls:`~Microsoft.AspNetCore.Hosting.WebHostBuilder`类, 它遵循创建者(Builder)模式,创建一个Web应用宿主. 创建者通过方法定义Web服务器(例如``UseKestrel``) 和启动(startup)类 (``UseStartup``). 在上面的示例中, 使用Kestrel Web服务器, 当然也可以指定其它Web服务器. 我们将在下一个章节中展示更多关于``UseStartup``的使用方法. ``WebHostBuilder``提供很多可选的方法包括``UseIISIntegration``用来宿主于IIS和IIS Express，``UseContentRoot``用来指定内容根目录. ``Build`` 和 ``Run`` 方法创建``IWebHost``将宿主应用并开始监听到来的HTTP请求.
 
 
-Startup
+启动(Startup)
 ---------------------------
-The ``UseStartup`` method on ``WebHostBuilder`` specifies the ``Startup`` class for your app.
+``WebHostBuilder``上的``UseStartup``方法指定了你应用的``Startup``类.
 
 .. literalinclude:: /getting-started/sample/aspnetcoreapp/Program.cs
     :language: c#
@@ -58,7 +58,7 @@ The ``UseStartup`` method on ``WebHostBuilder`` specifies the ``Startup`` class 
     :dedent: 4
     :emphasize-lines: 7
 
-The ``Startup`` class is where you define the request handling pipeline and where any services needed by the app are configured. The ``Startup`` class must be public and contain the following methods:
+``Startup``类是你定义请求处理管道并且配置应用所需服务的地方. ``Startup``类必须是公开并且包含如下方法:
 
 .. code-block:: c#
 
@@ -73,16 +73,16 @@ The ``Startup`` class is where you define the request handling pipeline and wher
       }
   }
 
-- ``ConfigureServices`` defines the services (see Services_ below) used by your app (such as the ASP.NET MVC Core framework, Entity Framework Core, Identity, etc.)
-- ``Configure`` defines the :doc:`middleware </fundamentals/middleware>` in the request pipeline
-- See :doc:`/fundamentals/startup` for more details
+- ``ConfigureServices`` 定义你的应用(如ASP.NET MVC Core framework, Entity Framework Core, Identity, 等等.) 所使用的服务 (参考下面的Services_) 
+- ``Configure`` 定义请求管道中的 :doc:`middleware </fundamentals/middleware>`
+- 更多详细请参照 :doc:`/fundamentals/startup`
 
-Services
+服务(Services)
 --------
 
-A service is a component that is intended for common consumption in an application. Services are made available through dependency injection. ASP.NET Core includes a simple built-in inversion of control (IoC) container that supports constructor injection by default, but can be easily replaced with your IoC container of choice. In addition to its loose coupling benefit, DI makes services available throughout your app. For example, :doc:`Logging </fundamentals/logging>` is available throughout your app. See :doc:`/fundamentals/dependency-injection` for more details.
+服务是应用中经常被调用的组件. 服务通过依赖注入生成. ASP.NET Core包含简单内建控制反转(IoC)容器默认支持构造注入, 也可以用你选择的IoC容器将其替换. 另外它具有松散耦合的优点, DI让服务可用于应用的各个地方. 例如, :doc:`Logging </fundamentals/logging>`对于你的整个应用都是可用的. 更多详细参照:doc:`/fundamentals/dependency-injection`.
 
-Middleware
+中间件(Middleware)
 ----------
 
 In ASP.NET Core you compose your request pipeline using :doc:`/fundamentals/middleware`. ASP.NET Core middleware performs asynchronous logic on an ``HttpContext`` and then either invokes the next middleware in the sequence or terminates the request directly. You generally "Use" middleware by invoking a corresponding ``UseXYZ`` extension method on the ``IApplicationBuilder`` in the ``Configure`` method.
