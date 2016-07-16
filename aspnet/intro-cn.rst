@@ -1,7 +1,7 @@
 ASP.NET Core介绍
 ============================
 
-由 `Daniel Roth`_, `Rick Anderson`_ 和 `Shaun Luttin <https://twitter.com/dicshaunary>`__ 编著
+由 `Daniel Roth`__, `Rick Anderson`__ 和 `Shaun Luttin <https://twitter.com/dicshaunary>`__ 编著
 
 ASP.NET Core是ASP.NET具有意义的重新设计. 此系列文章介绍了ASP.NET Core中的新概念并解释了它们如何帮助你开发现代Web应用.
 
@@ -12,7 +12,7 @@ ASP.NET Core是ASP.NET具有意义的重新设计. 此系列文章介绍了ASP.N
 什么是ASP.NET Core?
 ---------------------
 
-ASP.NET Core是崭新的开源和跨平台的框架，用来创建现代基于云的因特网互联应用程序，如Web应用、IoT应用和移动后端. ASP.NET Core应用可以运行在`.NET Core <https://www.microsoft.com/net/core/platform>`__ 或者在完整的.NET Framework上.它的架构被设计为提供一个优化的应用开发框架，让应用可以基于云或本地部署运行. 它包括最小功能单位的模块化组件,所以你可以在构建你的解决方案时保持灵活.你可以跨平台开发并运行你的ASP.NET Core apps于Windows, Mac 和 Linux. ASP.NET Core 在 `GitHub <https://github.com/aspnet/home>`_网站上开源.
+ASP.NET Core是崭新的开源和跨平台的框架，用来创建现代基于云的因特网互联应用程序，如Web应用、IoT应用和移动后端. ASP.NET Core应用可以运行在`.NET Core <https://www.microsoft.com/net/core/platform>`__  或者在完整的.NET Framework上.它的架构被设计为提供一个优化的应用开发框架，让应用可以基于云或本地部署运行. 它包括最小功能单位的模块化组件,所以你可以在构建你的解决方案时保持灵活.你可以跨平台开发并运行你的ASP.NET Core apps于Windows, Mac 和 Linux. ASP.NET Core 在 `GitHub <https://github.com/aspnet/home>`__ 网站上开源.
 
 为什么构建ASP.NET Core?
 -----------------------
