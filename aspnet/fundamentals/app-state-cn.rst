@@ -35,44 +35,47 @@
 HttpContext.Items
 ^^^^^^^^^^^^^^^^^
 
-The ``Items`` collection is the best location to store data that is only needed while processing a given request. Its contents are discarded after each request. It is best used as a means of communicating between components or middleware that operate at different points in time during a request, and have no direct relationship with one another through which to pass parameters or return values. See `Working with HttpContext.Items`_, below.
+``Items``集合是存储处理已发生请求所需要数据的最佳位置. 它的内容会在每个请求后丢弃. 它最好被用来在组件或者中间件之间进行通信, 这些组件和中间件在请求过程的不同时间点执行, 并且它们之间只是传递参数或者返回值,并没有直接关系. 参照下面的 `Working with HttpContext.Items`_,.
 
-Querystring and Post
+查询字符串和POST方法
 ^^^^^^^^^^^^^^^^^^^^
 
-State from one request can be provided to another request by adding values to the new request's querystring or by POSTing the data. These techniques should not be used with sensitive data, because these techniques require that the data be sent to the client and then sent back to the server. It is also best used with small amounts of data. Querystrings are especially useful for capturing state in a persistent manner, allowing links with embedded state to be created and sent via email or social networks, for use potentially far into the future. However, no assumption can be made about the user making the request, since URLs with querystrings can easily be shared, and care must also be taken to avoid `Cross-Site Request Forgery (CSRF) <https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)>`_ attacks (for instance, even assuming only authenticated users are able to perform actions using querystring-based URLs, an attacker could trick a user into visiting such a URL while already authenticated).
+请求状态可以通过添加值到新请求的查询字符串或通过POST数据提供给另一个请求. 这些技术不可用于敏感数据, 因为这些技术要求数据被发送到到客户端然后再回传给服务器.
+ 且最好用于少量数据. 查询字符串对在持久化方式下捕捉状态特别有用, 它允许连接到嵌入的被创建或通过邮件或者社交网络发送的状态, 可能会在将来的某个时间使用. 尽管如此, 不要假设用户创建了请求, 带有查询字符串的URL可以很容易地被共享, 并且必须要小心 `跨站点请求伪造(Cross-Site Request Forgery, CSRF) <https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)>`_ 攻击 (例如, 尽管假设只有认证的用户可以使用查询字符串进行操作, 攻击者可以骗取用户访问已认证的URL).
 
-Cookies
+Cookie
 ^^^^^^^
 
-Very small pieces of state-related data can be stored in Cookies. These are sent with every request, and so the size should be kept to a minimum. Ideally, only an identifier should be used, with the actual data stored somewhere on the server, keyed to the identifier.
+非常小的状态相关数据可以存储到Cookie中. 它们与所有请求一起发送, 所以尺寸要求保持最新. 理论上, 只有标识信息应该存储到Cookie中, 而真实的数据存储在服务器上, 关联到作为键的标识.
 
-Session
+会话(Session)
 ^^^^^^^
 
-Session storage relies on a cookie-based identifier to access data related to a given browser session (a series of requests from a particular browser and machine). You can't necessarily assume that a session is restricted to a single user, so be careful what kind of information you store in Session. It is a good place to store application state that is specific to a particular session but which doesn't need to be persisted permanently (or which can be reproduced as needed from a persistent store). See `Installing and Configuring Session`_, below for more details.
+会话存储依赖于基于Cookie的标识来访问浏览器会话相关的数据 (一系列来自特别浏览器和机器的请求). 
+没有必要假设会话严格绑定单独用户, 所以要小心你存储在会话中的信息类型.
+ 在特别的会话中可以很好的存储没有永久存储必要(或者可以从持久化存储重新获得)的应用状态 . 更多详细参照下方 `安装和配置会话`_.
 
-Cache
+缓存(Cache)
 ^^^^^
 
-Caching provides a means of storing and efficiently retrieving arbitrary application data based on developer-defined keys. It provides rules for expiring cached items based on time and other considerations. Learn more about :doc:`/performance/caching/index`.
+缓存通过开发人员定义的键提供了存储和有效查询随意的应用数据的平衡. 它提供了根据时间让存储项目过期和其它规则. 更多关于 :doc:`/performance/caching/index`.
 
-Configuration
+配置(Configuration)
 ^^^^^^^^^^^^^
 
-Configuration can be thought of as another form of application state storage, though typically it is read-only while the application is running. Learn more about :doc:`configuration`.
+配置可以被想象为另一种形式的应用状态存储, 尽管它常是在应用运行过程中只读. 更多关于 :doc:`configuration`.
 
-Other Persistence
+其它持久化
 ^^^^^^^^^^^^^^^^^
 
-Any other form of persistent storage, whether using Entity Framework and a database or something like Azure Table Storage, can also be used to store application state, but these fall outside of what ASP.NET supports directly.
+任何其它形式的持久化存储, 无论使用Entity Framework和数据库或者如Azure表存储(Table Storage), 都可以被用来存储应用状态, 但是这些都不在ASP.NET直接支持的范围.
 
-Working with HttpContext.Items
+与HttpContext.Items一起工作
 ------------------------------
 
-The ``HttpContext`` abstraction provides support for a simple dictionary collection of type ``IDictionary<object, object>``, called ``Items``. This collection is available from the start of an `HttpRequest`` and is discarded at the end of each request. You can access it by simply assigning a value to a keyed entry, or by requesting the value for a given key.
+``HttpContext`` 抽象提供了 ``IDictionary<object, object>`` 接口的简单词典集合, 称为``Items``. 此集合从`HttpRequest``实例的开始到其在请求结束时销毁之前都是可用的. 可以简单通过分配值到键的实例, 或者通过从给定键查询值.
 
-For example, some simple :doc:`middleware` could add something to the ``Items`` collection:
+例如, 在一个 :doc:`middleware` 中可以添加信息到 ``Items`` 集合:
 
 .. code-block:: c#
 
@@ -83,7 +86,7 @@ For example, some simple :doc:`middleware` could add something to the ``Items`` 
       await next.Invoke();
   });
 
-and later in the pipeline, another piece of middleware could access it:
+在后面的管道中, 另一个中间件可以访问它:
 
 .. code-block:: c#
 
@@ -92,43 +95,45 @@ and later in the pipeline, another piece of middleware could access it:
       await context.Response.WriteAsync("Verified request? " + context.Items["isVerified"]);
   });
 
-.. note:: Since keys into ``Items`` are simple strings, if you are developing middleware that needs to work across many applications, you may wish to prefix your keys with a unique identifier to avoid key collisions (e.g. "MyComponent.isVerified" instead of just "isVerified").
+.. note:: 鉴于 ``Items`` 里的键都是简单字符串, 如果你开发中间件需要跨应用工作, 你也许希望在你的键前面设置唯一标识的前缀以阻止键冲突 (例如, 使用 "MyComponent.isVerified" 代替 "isVerified").
 
 .. _session: 
 
-Installing and Configuring Session
+安装和配置会话
 ----------------------------------
 
-ASP.NET Core ships a session package that provides middleware for managing session state. You can install it by including a reference to the ``Microsoft.AspNetCore.Session`` package in your project.json file.
+ASP.NET Core 发布了会话程序包提供中间件对会话状态进行管理. 你可以在project.json文件中包含``Microsoft.AspNetCore.Session``的引用来安装它.
 
-Once the package is installed, Session must be configured in your application's ``Startup`` class. Session is built on top of ``IDistributedCache``, so you must configure this as well, otherwise you will receive an error.
+当程序包安装好, 会话就可以在你应用的 ``Startup`` 类中进行配置. 会话构建于 ``IDistributedCache`` 接口之上, 所以需要根据其特性进行配置, 否则会发生错误.
 
-.. note:: If you do not configure at least one ``IDistributedCache`` implementation, you will get an exception stating "Unable to resolve service for type 'Microsoft.Extensions.Caching.Distributed.IDistributedCache' while attempting to activate 'Microsoft.AspNetCore.Session.DistributedSessionStore'."
+.. note:: 如果你没有配置任何 ``IDistributedCache`` 实现, 你将会得到 "Unable to resolve service for type 'Microsoft.Extensions.Caching.Distributed.IDistributedCache' while attempting to activate 'Microsoft.AspNetCore.Session.DistributedSessionStore'." 的异常
 
-ASP.NET ships with several implementations of ``IDistributedCache``, including an in-memory option (to be used during development and testing only). To configure session using this in-memory option add the ``Microsoft.Extensions.Caching.Memory`` package in your project.json file and then add the following to ``ConfigureServices``:
+ASP.NET 发布了 ``IDistributedCache`` 的许多实现, 包括内存(in-memory)选项 (只在开发和测试使用).
+ 想要设置会话使用该内存(in-memory)选项添加 ``Microsoft.Extensions.Caching.Memory`` 程序包引用到project.json文件然后添加如下代码到 ``ConfigureServices``:
 
 .. code-block:: c#
 
   services.AddDistributedMemoryCache();
   services.AddSession();
 
-Then, add the following to ``Configure`` and you're ready to use session in your application code:
+然后, 添加如下代码到 ``Configure`` 就可以在应用代码中使用会话:
 
 .. code-block:: c#
 
   app.UseSession();
 
-You can reference Session from ``HttpContext`` once it is installed and configured.
+但会话安装和设置后,可以从 ``HttpContext`` 引用.
 
-.. note:: If you attempt to access ``Session`` before ``UseSession`` has been called, you will get an ``InvalidOperationException`` exception stating that "Session has not been configured for this application or request."
+.. note:: 如果尝试在 ``UseSession`` 被调用前访问``会话`` , 将会得到 ``InvalidOperationException`` 异常, 其信息以 "Session has not been configured for this application or request." 开头.
 
-.. warning:: If you attempt to create a new ``Session`` (i.e. no session cookie has been created yet) after you have already begun writing to the ``Response`` stream, you will get an ``InvalidOperationException`` as well, stating that "The session cannot be established after the response has started". This exception may not be displayed in the browser; you may need to view the web server log  to discover it, as shown below:
+.. warning:: 如果在已经开始编写``Response``流之后尝试创建新的 ``会话`` (换言之, 会话Cookie还没有被创建) , 将会得到 ``InvalidOperationException`` 异常, 以"The session cannot be established after the response has started" 开头. 此异常也许不会表示在浏览器里;
+ 可能需要通过查看Web服务器日志发现它, 内容如下:
 
 .. image:: app-state/_static/session-after-response-error.png
 
-Implementation Details
+实现细节
 ^^^^^^^^^^^^^^^^^^^^^^
-Session uses a cookie to track and disambiguate between requests from different browsers. By default this cookie is named ".AspNet.Session" and uses a path of "/". Further, by default this cookie does not specify a domain, and is not made available to client-side script on the page (because ``CookieHttpOnly`` defaults to ``true``).
+会话使用Cookie从不同的浏览器在请求间进行追踪和消除. By default this cookie is named ".AspNet.Session" and uses a path of "/". Further, by default this cookie does not specify a domain, and is not made available to client-side script on the page (because ``CookieHttpOnly`` defaults to ``true``).
 
 These defaults, as well as the default ``IdleTimeout`` (used on the server independent from the cookie), can be overridden when configuring ``Session`` by using ``SessionOptions`` as shown here:
 
@@ -177,7 +182,7 @@ Because ``Session`` is built on top of ``IDistributedCache``, you must always se
 
 If you're storing more complex objects, you will need to serialize the object to a ``byte[]`` in order to store them, and then deserialize them from ``byte[]`` when retrieving them.
 
-A Working Sample Using Session
+使用会话的工作样例
 ------------------------------
 
 The associated sample application demonstrates how to work with Session, including storing and retrieving simple types as well as custom objects. In order to see what happens when session expires, the sample has configured sessions to last just 10 seconds:
