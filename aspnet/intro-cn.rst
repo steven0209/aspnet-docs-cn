@@ -85,66 +85,71 @@ ASP.NET Core应用被简化为在它的``Main``方法中创建web服务器的控
 中间件(Middleware)
 ----------
 
-In ASP.NET Core you compose your request pipeline using :doc:`/fundamentals/middleware`. ASP.NET Core middleware performs asynchronous logic on an ``HttpContext`` and then either invokes the next middleware in the sequence or terminates the request directly. You generally "Use" middleware by invoking a corresponding ``UseXYZ`` extension method on the ``IApplicationBuilder`` in the ``Configure`` method.
+在ASP.NET Core中你将使用:doc:`/fundamentals/middleware`构造你的请求管道. ASP.NET Core中间件在``HttpContext``执行异步逻辑然后直接按顺序调用下一个中间件或者直接终止请求. 
+通常通过在``Configure``方法里调用对应的``IApplicationBuilder``接口上的``UseXYZ``扩展方法"使用"中间件.
 
-ASP.NET Core comes with a rich set of prebuilt middleware:
+ASP.NET Core包含一系列丰富的预建中间件:
 
 - :doc:`Static files </fundamentals/static-files>`
 - :doc:`/fundamentals/routing`
 - :doc:`/security/authentication/index`
 
-You can also author your own :doc:`custom middleware </fundamentals/middleware>`.
+也可以编写你自己的 :doc:`custom middleware </fundamentals/middleware>`.
 
-You can use any `OWIN <http://owin.org>`_-based middleware with ASP.NET Core. See :doc:`/fundamentals/owin` for details. 
+可以在ASP.NET Core中使用任何基于中间件的`OWIN <http://owin.org>`_. 详细参照 :doc:`/fundamentals/owin`. 
 
-Servers
+服务器(Servers)
 -------
 
-The ASP.NET Core hosting model does not directly listen for requests; rather it relies on an HTTP :doc:`server </fundamentals/servers>` implementation to forward the request to the application. The forwarded request is wrapped as a set of feature interfaces that the application then composes into an ``HttpContext``.  ASP.NET Core includes a managed cross-platform web server, called :ref:`Kestrel <kestrel>`, that you would typically run behind a production web server like `IIS <https://iis.net>`__ or `nginx <http://nginx.org>`__.
+ASP.NET Core宿主模型并不直接监听请求;
+ 实际上它依赖于HTTP :doc:`server </fundamentals/servers>` 实现将请求转发给应用. 转发的请求被一系列的特性借口包装起来然后由应用构成``HttpContext``.
+ ASP.NET Core包含一个托管的跨平台Web服务器称作:ref:`Kestrel <kestrel>`, 你也可以像以往一样运行在生产Web服务器如`IIS <https://iis.net>`__ 或 `nginx <http://nginx.org>`__.
 
 .. _content-root-lbl:
 
-Content root
+内容根目录（Content root）
 ------------
 
-The content root is the base path to any content used by the app, such as its views and web content. By default the content root is the same as application base path for the executable hosting the app; an alternative location can be specified with `WebHostBuilder`.
+内容根目录是应用使用的任何内容的基础路径, 这些内容包括它的试图和Web内容. 默认内容根目录与可执行宿主应用的应用基础路径相同; 它是一个全局位置可以通过`WebHostBuilder`指定.
 
 .. _web-root-lbl:
 
-Web root
+Web根目录
 --------
 
-The web root of your app is the directory in your project for public, static resources like css, js, and image files. The static files middleware will only serve files from the web root directory (and sub-directories) by default. The web root path defaults to `<content root>/wwwroot`, but you can specify a different location using the `WebHostBuilder`.
+应用的Web根目录是存放项目的公开、静态资源如CSS、JavaScript脚本和图片文件的存储目录. 
+静态文件中间件默认只提供来自于Web根目录(和其子目录)的文件资源. 
+Web根路径默认为`<content root>/wwwroot`, 你也可以使用`WebHostBuilder`指定一个不同的位置.
 
-Configuration
+配置(Configuration)
 -------------
 
-ASP.NET Core uses a new configuration model for handling simple name-value pairs. The new configuration model is not based on ``System.Configuration`` or *web.config*; rather, it pulls from an ordered set of configuration providers. The built-in configuration providers support a variety of file formats (XML, JSON, INI) and environment variables to enable environment-based configuration. You can also write your own custom configuration providers.
+ASP.NET Core使用崭新的配置模型来处理简单的键值对. 新的配置模型不再基于``System.Configuration`` 或 *web.config*; 而是它获得一个有序的配置提供者集合. 内建配置提供者提供各种文件类型(XML, JSON, INI) 并通过环境变量进行基于环境的设置. 也可以编写你自己的自定义配置提供者.
 
-See :doc:`/fundamentals/configuration` for more information.
+更多信息参照 :doc:`/fundamentals/configuration`.
 
-Environments
+环境(Environments)
 ---------------------
 
-Environments, like "Development" and "Production", are a first-class notion in ASP.NET Core and can  be set using environment variables. See :doc:`/fundamentals/environments` for more information.
+环境, 如"Development" 和 "Production",是ASP.NET Core头等的观念并可以设置使用环境变量. 更多信息参照 :doc:`/fundamentals/environments`.
 
-Build web UI and web APIs using ASP.NET Core MVC
+使用ASP.NET Core MVC构建Web UI和Web API
 ------------------------------------------------
 
-- You can create well-factored and testable web apps that follow the Model-View-Controller (MVC) pattern. See :doc:`/mvc/index` and :doc:`/testing/index`.
-- You can build HTTP services that support multiple formats and have full support for content negotiation. See :doc:`/mvc/models/formatting`
-- `Razor <http://www.asp.net/web-pages/overview/getting-started/introducing-razor-syntax-c>`__ provides a productive language to create :doc:`Views </mvc/views/index>`
-- :doc:`Tag Helpers </mvc/views/tag-helpers/intro>` enable server-side code to participate in creating and rendering HTML elements in Razor files
-- You can create HTTP services with full support for content negotiation using custom or built-in formatters (JSON, XML)
-- :doc:`/mvc/models/model-binding` automatically maps data from HTTP requests to action method parameters
-- :doc:`/mvc/models/validation` automatically performs client and server side validation
+- 你可以遵循Model-View-Controller (MVC)模式创建良好粒度并且可测试的Web应用. 参照 :doc:`/mvc/index` and :doc:`/testing/index`.
+- 你可以创建HTTP服务支持多种格式和完整的内容协商(Content Negotiation)支持. 参照 :doc:`/mvc/models/formatting`
+- `Razor <http://www.asp.net/web-pages/overview/getting-started/introducing-razor-syntax-c>`__ 提供创建:doc:`视图(Views) </mvc/views/index>`的生产性语言
+- :doc:`标签帮手(Tag Helpers) </mvc/views/tag-helpers/intro>` 让服务器端代码参与Razor文件中HTML元素的创建和渲染
+- 你可以使用自定义或内建格式化器(JSON, XML)通过对内容协商的完整支持创建HTTP服务
+- :doc:`/mvc/models/model-binding` 自动地从HTTP请求映射数据到行动(Action)方法参数
+- :doc:`/mvc/models/validation` 自动地提供客户端和服务器端验证
 
-Client-side development
+客户端开发
 -----------------------
 
-ASP.NET Core is designed to integrate seamlessly with a variety of client-side frameworks, including :doc:`AngularJS </client-side/angular>`, :doc:`KnockoutJS </client-side/knockout>` and :doc:`Bootstrap </client-side/bootstrap>`. See :doc:`/client-side/index` for more details.
+ASP.NET Core被设计成无缝集成各种客户端框架, 包括 :doc:`AngularJS </client-side/angular>`, :doc:`KnockoutJS </client-side/knockout>` 和 :doc:`Bootstrap </client-side/bootstrap>`. 更多详细参照 :doc:`/client-side/index` .
 
-Next steps
+下一步
 ----------
 
 - :doc:`/tutorials/first-mvc-app/index`
