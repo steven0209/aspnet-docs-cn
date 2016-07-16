@@ -101,7 +101,7 @@ ASP.NET Core包含一系列丰富的预建中间件:
 服务器(Servers)
 -------
 
- ASP.NET Core宿主模型并不直接监听请求; 实际上它依赖于HTTP :doc:`server </fundamentals/servers>` 实现将请求转发给应用. 转发的请求被一系列的特性借口包装起来然后由应用构成``HttpContext``. ASP.NET Core包含一个托管的跨平台Web服务器称作:ref:`Kestrel <kestrel>`, 你也可以像以往一样运行在生产Web服务器如`IIS <https://iis.net>`__ 或 `nginx <http://nginx.org>`__.
+ASP.NET Core宿主模型并不直接监听请求; 实际上它依赖于HTTP :doc:`server </fundamentals/servers>` 实现将请求转发给应用. 转发的请求被一系列的特性借口包装起来然后由应用构成``HttpContext``. ASP.NET Core包含一个托管的跨平台Web服务器称作:ref:`Kestrel <kestrel>`, 你也可以像以往一样运行在生产Web服务器如`IIS <https://iis.net>`__ 或 `nginx <http://nginx.org>`__.
 
 .. _content-root-lbl:
 
