@@ -130,27 +130,28 @@ AngularJS提供 `data binding <https://docs.angularjs.org/guide/databinding>`_ �
 模板
 ^^^^^^^^^
 
-`Templates <https://docs.angularjs.org/guide/templates>`_ in AngularJS are just plain HTML pages decorated with AngularJS directives and artifacts. A template in AngularJS is a mixture of directives, expressions, filters, and controls that combine with HTML to form the view.
+AngularJS中的 `Templates <https://docs.angularjs.org/guide/templates>`_ 不过就是平常的HTML页面decorated 夹杂着AngularJS directives和artifacts. A template in AngularJS is a mixture of directives, expressions, filters, and controls that combine with HTML to form the view.
 
-Add another view to demonstrate templates, and add the following to it:
+添加另一个视图来生成模板Add another view to demonstrate templates, 添加如下内容and add the following to it:
 
 .. literalinclude:: angular/sample/AngularSample/src/AngularSample/Views/Home/Templates.cshtml
   :language: html
   :linenos:
   :emphasize-lines: 8-10
 
-The template has AngularJS directives like ``ng-app``, ``ng-init``, ``ng-model`` and data binding expression syntax to bind the ``personName`` property. Running in the browser, the view looks like the screenshot below: 
+模板有AngularJS指令如 ``ng-app``, ``ng-init``, ``ng-model`` 和数据绑定表达式语法and data binding expression syntax 绑定to bind the ``personName`` 属性property.
+ 在浏览器中运行Running in the browser, 视图如下截图the view looks like the screenshot below: 
 
 .. image:: angular/_static/simple-templates-1.png
 
-If you change the name by typing in the input field, you will see the text next to the input field dynamically update, showing Angular two-way data binding in action.
+如果在输入框中更改了名字If you change the name by typing in the input field, 你将会看到输入框旁边的文本动态更新you will see the text next to the input field dynamically update, 展示了AngularJS双向数据绑定的能力showing Angular two-way data binding in action.
 
 .. image:: angular/_static/simple-templates-2.png
 
-Expressions
+表达式(Expressions)
 ^^^^^^^^^^^
 
-`Expressions <https://docs.angularjs.org/guide/expression>`_ in AngularJS are JavaScript-like code snippets that are written inside the ``{{ expression }}`` syntax. The data from these expressions is bound to HTML the same way as ``ng-bind`` directives. The main difference between AngularJS expressions and regular JavaScript expressions is that AngularJS expressions are evaluated against the ``$scope`` object in AngularJS. 
+AngularJS 中的 `Expressions <https://docs.angularjs.org/guide/expression>`_ 是类JavaScript代码片段书写在 ``{{ expression }}`` 里的语法syntax. 来自这些表达式的数据被绑定到HTML使用相同的方式如``ng-bind`` 指令.  在AngularJS和常规JavaScript表达式之间的主要区别是 AngularJS expressions are evaluated against the ``$scope`` object in AngularJS. 
 
 The AngularJS expressions in the sample below bind ``personName`` and a simple JavaScript calculated expression:
 
