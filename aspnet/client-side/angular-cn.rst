@@ -1,36 +1,36 @@
 :version: 1.0.0-rc1
 
-Using Angular for Single Page Applications (SPAs)
+使用Angular进行SPA(Single Page Application)开发
 =================================================
 
-By `Venkata Koppaka`_ and `Scott Addie`_
+由 `Venkata Koppaka`_ and `Scott Addie`_ 编辑
 
-In this article, you will learn how to build a SPA-style ASP.NET application using AngularJS.
+在这篇文章中, 你将会学习如何使用AngularJS构建SPA风格ASP.NET应用.
 
 .. contents:: Sections:
   :local:
   :depth: 1
   
-`View or download sample code <https://github.com/aspnet/Docs/tree/master/aspnet/client-side/angular/sample>`__
+`查看或下载样例代码 <https://github.com/aspnet/Docs/tree/master/aspnet/client-side/angular/sample>`__
 
-What is AngularJS?
+什么是AngularJS?
 ------------------
 
-`AngularJS <http://angularjs.org/>`_ is a modern JavaScript framework from Google commonly used to work with Single Page Applications (SPAs). AngularJS is open sourced under MIT license, and the development progress of AngularJS can be followed on `its GitHub repository <https://github.com/angular/angular.js>`_. The library is called Angular because HTML uses angular-shaped brackets.
+`AngularJS <http://angularjs.org/>`_ 是Google常用来实现单页面应用的现代JavaScript框架. AngularJS基于MIT许可开源, AngularJS开发进度可通过 `its GitHub repository <https://github.com/angular/angular.js>`_ 追踪. Angular得名于HTML使用尖括号.
 
-AngularJS is not a DOM manipulation library like jQuery, but it uses a subset of jQuery called jQLite. AngularJS is primarily based on declarative HTML attributes that you can add to your HTML tags. You can try AngularJS in your browser using the `Code School website <http://campus.codeschool.com/courses/shaping-up-with-angular-js/intro>`_.
+AngularJS不是像jQuery的DOM manipulation库, 但是它使用称为jQLite的jQuery子集. AngularJS主要基于declarative HTML 特性, 它可以添加到HTML标签. 你可以在浏览器里使用 `Code School website <http://campus.codeschool.com/courses/shaping-up-with-angular-js/intro>`_ 尝试AngularJS.
 
-Version 1.5.x is the current stable version and the Angular team is working towards a big rewrite of AngularJS for V2.0 which is currently still in development. This article focuses on Angular 1.X with some notes on where Angular is heading with 2.0.
+版本 1.5.x 是目前的稳定版本, Angular团队正在进行大量的重写实现开发中的2.0版. 此文关注Angular 1.X版本并添加一些Angular 2.0的注释.
 
-Getting Started
+入门
 ---------------
 
-To start using AngularJS in your ASP.NET application, you must either install it as part of your project, or reference it from a content delivery network (CDN).
+要开始在你的ASP.NET应用中使用AngularJS, 需要将它安装并作为工程的一部分, 或者从内容分发网络(CDN)引用它.
 
-Installation
+安装
 ^^^^^^^^^^^^
 
-There are several ways to add AngularJS to your application. If you’re starting a new ASP.NET Core web application in Visual Studio, you can add AngularJS using the built-in :ref:`Bower <bower-index>` support. Simply open ``bower.json``, and add an entry to the ``dependencies`` property:
+有很多方法可以添加AngularJS到你的应用. 如果你在Visual Studio中开始新的ASP.NET Core Web应用, 你可以使用内建 :ref:`Bower <bower-index>` 支持添加AngularJS. 简单打开 ``bower.json``, 添加实例到 ``dependencies`` 属性:
 
 .. _angular-bower-json:
 
@@ -39,12 +39,12 @@ There are several ways to add AngularJS to your application. If you’re startin
   :linenos:
   :emphasize-lines: 9
   
-Upon saving the ``bower.json`` file, Angular will be installed in your project's ``wwwroot/lib`` folder. Additionally, it will be listed within the ``Dependencies/Bower`` folder. See the screenshot below.
+当保存 ``bower.json`` 文件后, Angular 将会被安装到你工程的 ``wwwroot/lib`` 文件夹. 另外, 它将会被列到 ``Dependencies/Bower`` 文件夹. 参照下面的屏幕截图.
 
 .. image:: angular/_static/angular-solution-explorer.png
   :width: 283px
 
-Next, add a ``<script>`` reference to the bottom of the ``<body>`` section of your HTML page or `_Layout.cshtml` file, as shown here:
+接下来, 添加 ``<script>`` 引用到你的HTML页面 ``<body>`` 节的底部或者 `_Layout.cshtml` 文件, 如下:
 
 .. literalinclude:: angular/sample/AngularSample/src/AngularSample/Views/Shared/_Layout.cshtml
   :language: html
@@ -52,7 +52,7 @@ Next, add a ``<script>`` reference to the bottom of the ``<body>`` section of yo
   :lines: 48-52
   :emphasize-lines: 4
 
-It's recommended that production applications utilize CDNs for common libraries like Angular. You can reference Angular from one of several CDNs, such as this one:
+推荐生产应用使用CDN引用共通库如Angular. 可以从很多CDN之一引用Angular, 如下:
 
 .. literalinclude:: angular/sample/AngularSample/src/AngularSample/Views/Shared/_Layout.cshtml
   :language: html
@@ -60,71 +60,74 @@ It's recommended that production applications utilize CDNs for common libraries 
   :lines: 53-67
   :emphasize-lines: 10
 
-Once you have a reference to the angular.js script file, you're ready to begin using Angular in your web pages.
+当你引用了angular.js脚本文件, 就可以开始在Web页面中使用Angular了.
 
-Key Components
+关键组件
 --------------
 
-AngularJS includes a number of major components, such as *directives*, *templates*, *repeaters*, *modules*, *controllers*, and more. Let's examine how these components work together to add behavior to your web pages.
+AngularJS包括很多主要组件, 如 *directives*, *templates*, *repeaters*, *modules*, *controllers*, 等等. 让我们检视这些组件如何工作并添加行为到你的Web页面.
 
-Directives
+指令(Directives)
 ^^^^^^^^^^
 
-AngularJS uses `directives <https://docs.angularjs.org/guide/directive>`_ to extend HTML with custom attributes and elements. AngularJS directives are defined via ``data-ng-*`` or ``ng-*`` prefixes (``ng`` is short for angular). There are two types of AngularJS directives:
+AngularJS 使用 `directives <https://docs.angularjs.org/guide/directive>`_ 通过自定义特性和元素扩展HTML.
+ AngularJS指令通过 ``data-ng-*`` 或 ``ng-*`` 等前缀定义 (``ng`` 是angular的简写). 有两种类型的AngularJS指令:
 
-  #. **Primitive Directives**: These are predefined by the Angular team and are part of the AngularJS framework.
-  #. **Custom Directives**: These are custom directives that you can define.
+  #. **Primitive Directives**: 这些是Angular团队预定义的指令并作为AngularJS框架的组成部分.
+  #. **Custom Directives**: 这些是你自己定义的自定义指令.
 
-One of the primitive directives used in all AngularJS applications is the ``ng-app`` directive, which bootstraps the AngularJS application. This directive can be applied to the ``<body>`` tag or to a child element of the body. Let's see an example in action. Assuming you're in an ASP.NET project, you can either add an HTML file to the ``wwwroot`` folder, or add a new controller action and an associated view. In this case, I've added a new ``Directives`` action method to ``HomeController.cs``. The associated view is shown here:
+一个所有应用AngularJS应用都会使用的primitive directives就是 ``ng-app`` 指令, 用来启动AngularJS应用. 这个指令可以被附加到 ``<body>`` 标签或其子元素上. 让我们看一个可执行的样例. 假设你在ASP.NET项目中, 你可以添加文件到 ``wwwroot`` 文件夹, 或者添加一个新的控制器行动(controller action)和关联的视图(View).
+   在此, 我添加一个新的 ``Directives`` 行动(Action)方法到 ``HomeController.cs``. 关联视图如下:
 
 .. literalinclude:: angular/sample/AngularSample/src/AngularSample/Views/Home/Directives.cshtml
   :language: html
   :linenos:
   :emphasize-lines: 5,7
 
-To keep these samples independent of one another, I'm not using the shared layout file. You can see that we decorated the body tag with the ``ng-app`` directive to indicate this page is an AngularJS application. The ``{{2+2}}`` is an Angular data binding expression that you will learn more about in a moment. Here is the result if you run this application: 
+为了保持这些样例独立, 我没有使用共享的布局文件. 你可以参照我们通过 ``ng-app`` 指令decorated的 Body标签来表明此页面是一个AngularJS应用.
+ ``{{2+2}}`` 是需要你学习一段时间的Angular数据绑定表达式. 如下是你运行此应用的结果: 
 
 .. image:: angular/_static/simple-directive.png
 
-Other primitive directives in AngularJS include:
+其它AngularJS中的primitive指令包括:
 
 ``ng-controller``
-  Determines which JavaScript controller is bound to which view.
+  决定哪个JavaScript控制器(controller)绑定到哪个视图(view).
 
 ``ng-model``
-  Determines the model to which the values of an HTML element's properties are bound.
+  决定绑定到HTML元素属性值的模型(model).
 
 ``ng-init``
-  Used to initialize the application data in the form of an expression for the current scope.
+  用于初始化当前范围(scope)表达式形式的应用数据.
 
 ``ng-if``
-  Removes or recreates the given HTML element in the DOM based on the truthiness of the expression provided.
+  移除或重建DOM中既定HTML元素 in the DOM based on the truthiness of the expression provided.
 
 ``ng-repeat``
-  Repeats a given block of HTML over a set of data.
+  根据数据集重复给定HTML块.
 
 ``ng-show``
-  Shows or hides the given HTML element based on the expression provided.
+  基于提供的表达式展示或隐藏给定的HTML元素.
 
-For a full list of all primitive directives supported in AngularJS, please refer to the `directive documentation section on the AngularJS documentation website <https://docs.angularjs.org/api/ng/directive>`_.
+AngularJS中所有primitive指令完整的列表参考 `directive documentation section on the AngularJS documentation website <https://docs.angularjs.org/api/ng/directive>`_.
 
-Data Binding
+数据绑定
 ^^^^^^^^^^^^
 
-AngularJS provides `data binding <https://docs.angularjs.org/guide/databinding>`_ support out-of-the-box using either the ``ng-bind`` directive or a data binding expression syntax such as ``{{expression}}``. AngularJS supports two-way data binding where data from a model is kept in synchronization with a view template at all times. Any changes to the view are automatically reflected in the model. Likewise, any changes in the model are reflected in the view.
+AngularJS提供 `data binding <https://docs.angularjs.org/guide/databinding>`_ 支持 out-of-the-box using either the ``ng-bind`` directive or a data binding expression syntax such as ``{{expression}}``. AngularJS supports two-way data binding where data from a model is kept in synchronization with a view template at all times. Any changes to the view are automatically reflected in the model. Likewise, any changes in the model are reflected in the view.
 
-Create either an HTML file or a controller action with an accompanying view named ``Databinding``. Include the following in the view:
+创建HTML文件或者控制器动作 with 根据名为``Databinding``的视图(view) . 在视图中包括如下:
 
 .. literalinclude:: angular/sample/AngularSample/src/AngularSample/Views/Home/Databinding.cshtml
   :language: html
   :linenos:
   :emphasize-lines: 8-10
 
-Notice that you can display model values using either directives or data binding (``ng-bind``). The resulting page should look like this:
+注意你能使用指令或数据绑定显示模型值Notice that you can display model values using either directives or data binding (``ng-bind``). 结果页面如下:
 
 .. image:: angular/_static/simple-databinding.png
 
-Templates
+模板
 ^^^^^^^^^
 
 `Templates <https://docs.angularjs.org/guide/templates>`_ in AngularJS are just plain HTML pages decorated with AngularJS directives and artifacts. A template in AngularJS is a mixture of directives, expressions, filters, and controls that combine with HTML to form the view.

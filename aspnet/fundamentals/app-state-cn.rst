@@ -133,9 +133,10 @@ ASP.NET 发布了 ``IDistributedCache`` 的许多实现, 包括内存(in-memory)
 
 实现细节
 ^^^^^^^^^^^^^^^^^^^^^^
-会话使用Cookie从不同的浏览器在请求间进行追踪和消除. By default this cookie is named ".AspNet.Session" and uses a path of "/". Further, by default this cookie does not specify a domain, and is not made available to client-side script on the page (because ``CookieHttpOnly`` defaults to ``true``).
+会话使用Cookie从不同的浏览器在请求间进行追踪和消除. 默认Cookie以 ".AspNet.Session" 命名并使用路径 "/".
+ 还有, 默认此Cookie不明确指定域(domain), 并且在客户端脚本中不可用 (因为 ``CookieHttpOnly`` 默认设置为 ``true``).
 
-These defaults, as well as the default ``IdleTimeout`` (used on the server independent from the cookie), can be overridden when configuring ``Session`` by using ``SessionOptions`` as shown here:
+这些默认设置当然也包括 ``IdleTimeout`` (用来将服务器从Cookie独立出来), 可以通过如下使用``SessionOptions``配置 ``Session`` 进行覆盖:
 
 .. code-block:: c#
 
@@ -145,14 +146,14 @@ These defaults, as well as the default ``IdleTimeout`` (used on the server indep
     options.IdleTimeout = TimeSpan.FromSeconds(10);
   });
 
-The ``IdleTimeout`` is used by the server to determine how long a session can be idle before its contents are abandoned. Each request made to the site that passes through the Session middleware (regardless of whether Session is read from or written to within that middleware) will reset the timeout. Note that this is independent of the cookie's expiration.
+``IdleTimeout`` 被服务器用来决定会话空闲多长时间后被废弃. 每个通过会话中间件的请求 (不管会话是在中间件内进行读取或写入) 都将超时重置. 注意这是独立于Cookie过期的.
 
-.. note:: ``Session`` is *non-locking*, so if two requests both attempt to modify the contents of session, the last one will win. Further, ``Session`` is implemented as a *coherent session*, which means that all of the contents are stored together. This means that if two requests are modifying different parts of the session (different keys), they may still impact each other.
+.. note:: ``Session`` 是 *non-locking*, 如果两个请求同时尝试修改会话内容, 最后的将会是最终结果. 还有, ``Session`` 被实现为 *coherent session*, 代表所有内容都是存储在一起的. 如果两个请求修改会话的不同部分 (不同键), 它们都将影响对方.
 
 ISession
 ^^^^^^^^^
 
-Once session is installed and configured, you refer to it via HttpContext, which exposes a property called ``Session`` of type :dn:iface:`~Microsoft.AspNetCore.Http.ISession`. You can use this interface to get and set values in ``Session``, such as ``byte[]``.
+当会话安装配置后, 可以通过HttpContext引用到, 它的实例将会曝露称为类型为:dn:iface:`~Microsoft.AspNetCore.Http.ISession`的 ``Session`` 实例属性. 可以使用这个接口获取或设置``Session``值, 如 ``byte[]``.
 
 .. code-block:: c#
 
@@ -169,7 +170,7 @@ Once session is installed and configured, you refer to it via HttpContext, which
       void Clear();
   }
 
-Because ``Session`` is built on top of ``IDistributedCache``, you must always serialize the object instances being stored. Thus, the interface works with ``byte[]`` not simply ``object``. However, there are extension methods that make working with simple types such as ``String`` and ``Int32`` easier, as well as making it easier to get a byte[] value from session.
+因为 ``Session`` 构建于 ``IDistributedCache``之上, 必须序列化存储的对象化实例. 所以, 与 ``byte[]`` 工作的接口不会简化 ``object``. 尽管如此, 扩展方法让简单类型如 ``String`` 和 ``Int32`` 的工作变得简单, 也让从会话获取 byte[] 值变得容易.
 
 .. code-block:: c#
 
@@ -180,12 +181,12 @@ Because ``Session`` is built on top of ``IDistributedCache``, you must always se
   string stringVal = context.Session.GetString("key2");
   byte[] result = context.Session.Get("key3");
 
-If you're storing more complex objects, you will need to serialize the object to a ``byte[]`` in order to store them, and then deserialize them from ``byte[]`` when retrieving them.
+如果存储更复杂的对象需要序列化对象到 ``byte[]`` 以存储它们, 然后再查询的时候从 ``byte[]`` 反序列化.
 
 使用会话的工作样例
 ------------------------------
 
-The associated sample application demonstrates how to work with Session, including storing and retrieving simple types as well as custom objects. In order to see what happens when session expires, the sample has configured sessions to last just 10 seconds:
+相关的样例应用演示如何与会话工作, 包括存储和查询简单自定义对象类型. 为了展示会话过期会发生什么, 样例设置会话持续只有10秒钟:
 
 .. literalinclude:: app-state/sample/src/AppState/Startup.cs
   :linenos:
@@ -194,11 +195,11 @@ The associated sample application demonstrates how to work with Session, includi
   :dedent: 8
   :emphasize-lines: 2,6
 
-When you first navigate to the web server, it displays a screen indicating that no session has yet been established:
+当你第一次导航到Web服务器, 屏幕会显示还没有会话发布:
 
 .. image:: app-state/_static/no-session-established.png
 
-This default behavior is produced by the following middleware in *Startup.cs*, which runs when requests are made that do not already have an established session (note the highlighted sections):
+此默认行为由如下在 *Startup.cs* 中的中间件完成, 当请求发生但还没有发布时运行 (注意高亮部分):
 
 .. literalinclude:: app-state/sample/src/AppState/Startup.cs
   :linenos:
@@ -207,7 +208,7 @@ This default behavior is produced by the following middleware in *Startup.cs*, w
   :dedent: 12
   :emphasize-lines: 4,6,8-11,28-29
 
-``GetOrCreateEntries`` is a helper method that will retrieve a ``RequestEntryCollection`` instance from ``Session`` if it exists; otherwise, it creates the empty collection and returns that. The collection holds ``RequestEntry`` instances, which keep track of the different requests the user has made during the current session, and how many requests they've made for each path.
+``GetOrCreateEntries`` 是帮助方法将会从 ``Session`` 查询存在的 ``RequestEntryCollection`` 实例; 否则, 它将创建并返回空集合. 集合存储 ``RequestEntry`` 实例, 其中保留当前会话中用户的不同请求, 和每个路径有多少请求.
 
 .. literalinclude:: app-state/sample/src/AppState/Model/RequestEntry.cs
   :linenos:
@@ -221,7 +222,7 @@ This default behavior is produced by the following middleware in *Startup.cs*, w
   :lines: 6-
   :dedent: 4
 
-Fetching the current instance of ``RequestEntryCollection`` is done via the ``GetOrCreateEntries`` helper method:
+通过 ``GetOrCreateEntries`` 帮助方法查找 ``RequestEntryCollection`` 当前实例:
 
 .. literalinclude:: app-state/sample/src/AppState/Startup.cs
   :linenos:
@@ -230,17 +231,17 @@ Fetching the current instance of ``RequestEntryCollection`` is done via the ``Ge
   :dedent: 8
   :emphasize-lines: 4,8-9
 
-When the entry for the object exists in ``Session``, it is retrieved as a ``byte[]`` type, and then deserialized using a ``MemoryStream`` and a ``BinaryFormatter``, as shown above. If the object isn't in ``Session``, the method returns a new instance of the ``RequestEntryCollection``.
+当对象实例存在于 ``Session``, 它被以 ``byte[]`` 类型查询出来, 然后如下使用 ``MemoryStream`` 和 ``BinaryFormatter`` 反序列化. 如果对象不在 ``Session`` 中, 方法返回 ``RequestEntryCollection`` 的新实例.
 
-In the browser, clicking the Establish session hyperlink makes a request to the path "/session", and returns this result:
+在浏览器中, 点击发布会话链接创建一个到路径"/session"的请求, 会返回结果:
 
 .. image:: app-state/_static/session-established.png
 
-Refreshing the page results in the count incrementing; returning to the root of the site (after making a few more requests) results in this display, summarizing all of the requests that were made during the current session:
+刷新页面结果计数会增加; 回到站点根路径 (在创建了少量请求后) 就会出现这样的结果, 总结了当前会话发生的所有请求:
 
 .. image:: app-state/_static/session-established-with-request-counts.png
 
-Establishing the session is done in the middleware that handles requests to "/session":
+中间件处理到 "/session" 的请求并完成发布会话:
 
 .. literalinclude:: app-state/sample/src/AppState/Startup.cs
   :linenos:
@@ -249,7 +250,7 @@ Establishing the session is done in the middleware that handles requests to "/se
   :dedent: 12
   :emphasize-lines: 2,8-14
 
-Requests to this path will get or create a ``RequestEntryCollection``, will add the current path to it, and then will store it in session using the helper method ``SaveEntries``, shown below:
+到此路径的请求会得到或创建新的 ``RequestEntryCollection``, 将会添加最新的路径, 然后如下通过 ``SaveEntries``方法存储在会话中:
 
 .. literalinclude:: app-state/sample/src/AppState/Startup.cs
   :linenos:
@@ -258,9 +259,9 @@ Requests to this path will get or create a ``RequestEntryCollection``, will add 
   :dedent: 8
   :emphasize-lines: 6
 
-``SaveEntries`` demonstrates how to serialize a custom object into a ``byte[]`` for storage in ``Session`` using a ``MemoryStream`` and a ``BinaryFormatter``.
+``SaveEntries`` 展示如何序列化自定义对象到 ``byte[]`` 然后使用``MemoryStream`` 和 ``BinaryFormatter`` 存储到 ``Session`` 中.
 
-The sample includes one more piece of middleware worth mentioning, which is mapped to the "/untracked" path. You can see its configuration here:
+样例包括更多可涉及的中间件, 如映射到 "/untracked" 路径的. 可以参照它的配置:
 
 .. literalinclude:: app-state/sample/src/AppState/Startup.cs
   :linenos:
@@ -269,4 +270,4 @@ The sample includes one more piece of middleware worth mentioning, which is mapp
   :dedent: 12
   :emphasize-lines: 2,13
 
-Note that this middleware is configured **before** the call to ``app.UseSession()`` is made (on line 13). Thus, the ``Session`` feature is not available to this middleware, and requests made to it do not reset the session ``IdleTimeout``. You can confirm this behavior in the sample application by refreshing the untracked path several times within 10 seconds, and then return to the application root. You will find that your session has expired, despite no more than 10 seconds having passed between your requests to the application.
+注意此设置的中间件 **before** 创建到 ``app.UseSession()`` 的调用 (13行). 所以, ``Session`` 特性对此中间件不可用, and requests made to it do not reset the session ``IdleTimeout``. You can confirm this behavior in the sample application by refreshing the untracked path several times within 10 seconds, and then return to the application root. You will find that your session has expired, despite no more than 10 seconds having passed between your requests to the application.
