@@ -6,7 +6,7 @@
 
    start-mvc-cn
    adding-controller-cn
-   adding-view
+   adding-view-cn
    adding-model
    working-with-sql
    controller-methods-views
