@@ -1,7 +1,7 @@
 ASP.NET Core MVC和Visual Studio入门
 =======================================================
 
-由 `Rick Anderson`_ 编辑
+由 `Rick Anderson`_ 编辑, `Cui, Richard Chikun <http://richardcuick.github.io/>`__ 翻译.
 
 此教程将展示使用 `Visual Studio 2015 <https://www.visualstudio.com/en-us/visual-studio-homepage-vs.aspx>`__ 构建ASP.NET Core MVC Web应用的基础. 
 

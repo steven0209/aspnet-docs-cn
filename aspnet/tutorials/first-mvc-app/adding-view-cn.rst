@@ -1,7 +1,7 @@
 添加视图
 ================================================
 
-由 `Rick Anderson`_ 编辑
+由 `Rick Anderson`_ 编辑, `Cui, Richard Chikun <http://richardcuick.github.io/>`__ 翻译.
 
 本节你会使用Razor视图模板文件修改 ``HelloWorldController`` 类干净地封装生成HTML响应给客户端的过程.
 
@@ -64,78 +64,84 @@
 
 保存修改后单击 **About** 链接. 注意每个页面如何表示 **Mvc Movie** 链接. 我们可能在布局模板中改变一次然后站点所有的页面都会反映到新的链接文本和新的标题.
 
-Examine the *Views/_ViewStart.cshtml* file:
+检查 *Views/_ViewStart.cshtml* 文件:
 
 .. literalinclude:: start-mvc/sample/src/MvcMovie/Views/_ViewStart.cshtml
   :language: HTML
 
-The *Views/_ViewStart.cshtml* file brings in the *Views/Shared/_Layout.cshtml* file to each view. You can use the ``Layout`` property to set a different layout view, or set it to ``null`` so no layout file will be used.
+*Views/_ViewStart.cshtml* 文件设置每个视图中都引用 *Views/Shared/_Layout.cshtml* 文件. 你可以使用 ``Layout`` 属性设置不同的布局视图, 或设置为 ``null`` 指定不适用布局文件.
 
-Now, let's change the title of the ``Index`` view.
+现在让我们修改 ``Index`` 视图的标题.
 
-Open *Views/HelloWorld/Index.cshtml*. There are two places to make a change:
+打开 *Views/HelloWorld/Index.cshtml*. 有两个地方需要修改:
 
- - The text that appears in the title of the browser
- - The secondary header (``<h2>`` element).
+ - 浏览器标题上显示的文本
+ - 次要头部标题 (``<h2>`` 元素).
 
-You'll make them slightly different so you can see which bit of code changes which part of the app.
+你可以让他们稍有不同这样你可以看到代码修改的是应用的哪个部分.
 
 .. literalinclude:: start-mvc/sample/src/MvcMovie/Views/HelloWorld/Index2.cshtml
   :language: HTML
   :emphasize-lines: 2, 5
 
-``ViewData["Title"] = "Movie List";`` in the code above sets the ``Title`` property of the :dn:class:`~Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary` to "Movie List". The ``Title`` property is used in the ``<title>`` HTML element in the layout page:
+上面代码中的 ``ViewData["Title"] = "Movie List";`` 设置 :dn:class:`~Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary` 的 ``Title`` 属性为 "Movie List". ``Title`` 属性用于布局页中的 ``<title>`` HTML元素:
 
 .. code-block:: HTML
 
   <title>@ViewData["Title"] - Movie App</title>
 
-Save your change and refresh the page. Notice that the browser title, the primary heading, and the secondary headings have changed. (If you don't see changes in the browser, you might be viewing cached content. Press Ctrl+F5 in your browser to force the response from the server to be loaded.) The browser title is created with ``ViewData["Title"]`` we set in the *Index.cshtml* view template and the additional "- Movie App" added in the layout file.
+保存你的修改刷新页面. 注意浏览器标题, 主要标题, 和次要标题都已被修改. (如果没看到浏览器中的修改, 你可能正在查看缓存的内容. 在浏览器中按 Ctrl+F5 重新加载服务器响应内容.) 浏览器标题通过 ``ViewData["Title"]`` 创建我们在 *Index.cshtml* 视图模板中设置并添加 "- Movie App" 到布局文件.
 
-Also notice how the content in the *Index.cshtml* view template was merged with the *Views/Shared/_Layout.cshtml* view template and a single HTML response was sent to the browser. Layout templates make it really easy to make changes that apply across all of the pages in your application. To learn more see :doc:`/mvc/views/layout`.
+还要注意 *Index.cshtml* 视图模板的内容与 *Views/Shared/_Layout.cshtml* 视图模板合并并且给浏览器返回单独的HTML响应. 布局模板使得跨应用所有页面进行修改变得容易. 更多参照 :doc:`/mvc/views/layout`.
 
 .. image:: adding-view/_static/hell3.png
 
-Our little bit of "data" (in this case the "Hello from our View Template!" message) is hard-coded, though. The MVC application has a "V" (view) and you've got a "C" (controller), but no "M" (model) yet. Shortly, we'll walk through how to create a database and retrieve model data from it.
+尽管我们的少量数据 "data" (此例中的 "Hello from our View Template!" 消息) 是硬编码的. MVC应用有"V"(视图) 而你有"C" (控制器), 但是还没有 "M" (模型).
+ 稍后, 我们会讨论如何创建数据库和从中查询模型数据.
 
-Passing Data from the Controller to the View
+从控制器传递数据给视图
 ----------------------------------------------
 
-Before we go to a database and talk about models, though, let's first talk about passing information from the controller to a view. Controller actions are invoked in response to an incoming URL request. A controller class is where you write the code that handles the incoming browser requests, retrieves data from a database, and ultimately decides what type of response to send back to the browser. View templates can then be used from a controller to generate and format an HTML response to the browser.
+在我们考虑数据库前我们先聊聊模型, 让我们先考虑从控制器传递信息给视图. 调用控制器行为响应进入的URL请求. 控制器类是编码处理进入的浏览器请求, 从数据库查询数据,
+ 然后决定将什么类型的响应发送回浏览器. 视图模板可以被用来从控制器生成和组织发送给浏览器的HTML响应.
 
-Controllers are responsible for providing whatever data or objects are required in order for a view template to render a response to the browser. A best practice: A view template should never perform business logic or interact with a database directly. Instead, a view template should work only with the data that's provided to it by the controller. Maintaining this "separation of concerns" helps keep your code clean, testable and more maintainable.
+控制器的职责是提供任何需要的数据或对象给视图模板来渲染给浏览器的响应. 最佳实践是: 视图模板应该不会展示业务逻辑或直接与数据库交互. 取而代之的是, 视图模板应该只操作控制器提供的数据.
+ 维护这个 "关注点分离" 帮助保持你的代码整洁、可测试以及有更好的可维护性.
 
-Currently, the ``Welcome`` method in the ``HelloWorldController`` class takes a ``name`` and a ``ID`` parameter and then outputs the values directly to the browser. Rather than have the controller render this response as a string, let’s change the controller to use a view template instead. The view template will generate a dynamic response, which means that you need to pass appropriate bits of data from the controller to the view in order to generate the response. You can do this by having the controller put the dynamic data (parameters) that the view template needs in a ``ViewData`` dictionary that the view template can then access.
+当前,  ``HelloWorldController`` 类里的 ``Welcome`` 方法获取 ``name`` 和 ``ID`` 参数然后直接输出值到浏览器. 相比让控制器用字符串渲染响应, 让我们更改控制器使用视图模板取而代之. 视图模板将会生成动态的响应, 意味着你需要从控制器传递适合的数据给视图以生成响应. 你可以用控制器将视图模板需要的动态数据(参数)放到 ``ViewData`` 词典中让视图模板访问.
 
-Return to the *HelloWorldController.cs* file and change the ``Welcome`` method to add a ``Message`` and ``NumTimes`` value to the ``ViewData`` dictionary. The ``ViewData`` dictionary is a dynamic object, which means you can put whatever you want in to it; the ``ViewData`` object has no defined properties until you put something inside it. The :doc:`MVC model binding system  </mvc/models/model-binding>` automatically maps the named parameters (``name`` and ``numTimes``) from the query string in the address bar to parameters in your method. The complete *HelloWorldController.cs* file looks like this:
+回到 *HelloWorldController.cs* 文件并修改 ``Welcome`` 方法添加 ``Message`` 和 ``NumTimes`` 值到 ``ViewData`` 词典. ``ViewData`` 词典是动态对象, 
+你可以方任何你想要保存的内容进去; ``ViewData`` 对象没有定义的属性直到你放值进去. :doc:`MVC model binding system  </mvc/models/model-binding>`
+自动从地址栏里的查询字符串映射命名的属性 (``name`` 和 ``numTimes``) 到你方法的参数. 完整的 *HelloWorldController.cs* 文件如此:
 
 .. literalinclude:: start-mvc/sample/src/MvcMovie/Controllers/HelloWorldController.cs
   :language: c#
   :lines: 152-172
 
-The ``ViewData`` dictionary object contains data that will be passed to the view. Next, you need a Welcome view template.
+``ViewData`` 词典对象包含将要传给视图的数据. 接下来, 你需要一个欢迎视图模板.
 
-- Right click on the *Views/HelloWorld* folder, and then **Add > New Item**.
-- In the **Add New Item - MvcMovie** dialog
+- 右键点击 *Views/HelloWorld* 文件夹, 然后选择 **Add > New Item**.
+- 在 **Add New Item - MvcMovie** 对话框
 
-  - In the search box in the upper-right, enter *view*
-  - Tap **MVC View Page**
-  - In the **Name** box, enter *Welcome.cshtml*
-  - Tap **Add**
+  - 在右上角的搜索框中, 输入 *view*
+  - 单击 **MVC View Page**
+  - 在 **Name** 输入框中, 输入 *Welcome.cshtml*
+  - 单击 **Add**
 
-You'll create a loop in the *Welcome.cshtml* view template that displays "Hello" ``NumTimes``. Replace the contents of *Views/HelloWorld/Welcome.cshtml* with the following:
+你将会在 *Welcome.cshtml* 视图模板中创建循环显示 "Hello" ``NumTimes``. 将 *Views/HelloWorld/Welcome.cshtml* 内容做如下替换:
 
 .. literalinclude:: start-mvc/sample/src/MvcMovie/Views/HelloWorld/Welcome.cshtml
   :language: none
 
-Save your changes and browse to the following URL:
+保存更改浏览如下URL:
 
 \http://localhost:xxxx/HelloWorld/Welcome?name=Rick&numtimes=4
 
-Data is taken from the URL and passed to the controller using the :doc:`MVC model binder </mvc/models/model-binding>` . The controller packages the data into a ``ViewData`` dictionary and passes that object to the view. The view then renders the data as HTML to the browser.
+数据从URL中提取并使用 :doc:`MVC model binder </mvc/models/model-binding>` 传递给控制器.
+ 控制器包装数据到 ``ViewData`` 词典并传递此对象到视图. 然后视图将数据渲染为HTML传递给浏览器.
 
 .. image:: adding-view/_static/rick.png
 
-In the sample above, we used the ``ViewData`` dictionary to pass data from the controller to a view. Later in the tutorial, we will use a view model to pass data from a controller to a view. The view model approach to passing data is generally much preferred over the ``ViewData`` dictionary approach.
+在上面的样例中, 我们使用 ``ViewData`` 词典从控制器传递数据给视图. 此教程后面, 我们会使用视图模型从控制器传递数据给视图. 视图模型传递数据跟 ``ViewData`` 词典方法接近但更受欢迎.
 
-Well, that was a kind of an "M" for model, but not the database kind. Let's take what we've learned and create a database of movies. 
+"M"代表模型, 但不是数据库那种. 让我们实践我们所学并创建一个影片的数据库. 

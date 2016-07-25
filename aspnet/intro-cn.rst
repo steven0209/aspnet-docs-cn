@@ -1,7 +1,7 @@
 ASP.NET Core简介
 ============================
 
-由 `Daniel Roth`_ , `Rick Anderson`_ 和 `Shaun Luttin <https://twitter.com/dicshaunary>`__ 编著
+由 `Daniel Roth`_ , `Rick Anderson`_ 和 `Shaun Luttin <https://twitter.com/dicshaunary>`__ 编著, `Cui, Richard Chikun <http://richardcuick.github.io/>`__ 翻译.
 
 ASP.NET Core是ASP.NET具有意义的重新设计. 此系列文章介绍了ASP.NET Core中的新概念并解释了它们如何帮助你开发现代Web应用.
 
@@ -148,6 +148,6 @@ ASP.NET Core被设计成无缝集成各种客户端框架, 包括 :doc:`AngularJ
 ----------
 
 - :doc:`/tutorials/first-mvc-app/index-cn`
-- :doc:`/tutorials/your-first-mac-aspnet`
+- :doc:`/tutorials/your-first-mac-aspnet-cn`
 - :doc:`/tutorials/first-web-api`
 - :doc:`/fundamentals/index`

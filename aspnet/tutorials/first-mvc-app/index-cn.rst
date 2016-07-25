@@ -7,10 +7,10 @@
    start-mvc-cn
    adding-controller-cn
    adding-view-cn
-   adding-model
-   working-with-sql
-   controller-methods-views
-   search
-   new-field
-   validation
-   details
+   adding-model-cn
+   working-with-sql-cn
+   controller-methods-views-cn
+   search-cn
+   new-field-cn
+   validation-cn
+   details-cn

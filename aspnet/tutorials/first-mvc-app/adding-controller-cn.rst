@@ -1,7 +1,7 @@
 添加控制器
 ==================================================
 
-由 `Rick Anderson`_ 编辑
+由 `Rick Anderson`_ 编辑, `Cui, Richard Chikun <http://richardcuick.github.io/>`__ 翻译.
 
 MVC(Model-View-Controller)架构模式将应用分离为三个主要组件: 模型(**M**\odel), 视图(**V**\iew),和控制器(**C**\ontroller). MVC模式帮助创建出比传统庞大的应用更容易测试和维护和更新的应用. 基于MVC的应用包括: 
 
