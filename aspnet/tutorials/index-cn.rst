@@ -7,8 +7,8 @@
    your-first-mac-aspnet-cn
    first-web-api-cn
    publish-to-azure-webapp-using-vs-cn
-   first-mvc-app/index
-   nano-server
+   first-mvc-app/index-cn
+   nano-server-cn
    ASP.NET Core and Azure Service Fabric <https://azure.microsoft.com/en-us/documentation/articles/service-fabric-add-a-web-frontend/>
    /mobile/native-mobile-backend
    dotnet-watch
